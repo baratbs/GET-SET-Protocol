@@ -1,0 +1,102 @@
+//Protocol code to put the data in the JSON FORMAT
+
+#define SIZE_OF_THE_STRING 100
+
+char THE_STRING[SIZE_OF_THE_STRING];
+
+typedef struct string_parser{
+    int pos;
+    int tokens;
+}string_parser;
+
+typedef struct types{
+    STRING=1;
+    PRIMITIVE=2;
+}typ;
+
+void parser_initialization(string_parser *parser){
+    parser->pos=0;
+    parser->tokens=0;
+}
+
+void find_the_type(char*THE_STRING){
+
+        c=THE_STRING[0];
+        switch(c){
+            case 'T':
+            type=PRIMITIVE;
+                break;
+            case 'F':
+            type=PRIMITIVE;
+                break;
+            case 't':
+            type=PRIMITIVE;
+                break;
+            case 'f':
+            type=PRIMITIVE;
+                break;
+            case '0':
+            type=PRIMITIVE;
+                break;
+            case '1':
+            type=PRIMITIVE;
+                break;
+            case '2':
+            type=PRIMITIVE;
+                break;
+            case '3':
+            type=PRIMITIVE;
+                break;
+            case '4':
+            type=PRIMITIVE;
+                break;
+            case '5':
+            type=PRIMITIVE;
+                break;
+            case '6':
+            type=PRIMITIVE;
+                break;
+            case '7':
+            type=PRIMITIVE;
+                break;
+            case '8':
+            type=PRIMITIVE;
+                break;
+            case '9':
+            type=PRIMITIVE;
+                break;
+            default:type=STRING;
+            break;
+        }
+        return type;
+}
+
+void string_fill(string_parser *parser,GIVEN_STRING,THE_STRING,const size_t length){
+    THE_STRING[pos++]='{';
+    for(;i<length && THE_STRING!='\0',parser->pos++){
+        int type=find_the_type(THE_STRING);
+            if(type==STRING){
+                THE_STRING[parser->pos++]='\"';
+                    
+                    for(;i<length && GIVEN_STRING!='\0',parser->pos++){
+                        THE_STRING[pos++]=*GIVEN_STRING;
+                        GIVEN_STRING++;
+                    }
+                    THE_STRING[pos++]='\"';
+            }
+    }
+
+
+
+
+
+
+
+
+#include<stdio.h>
+int main(){
+    while(string_parser.tokens!=11){
+        scanf("%s",GIVEN_STRING);
+        string_fill(&p,GIVEN_STRING,strlen(GIVEN_STRING));
+    }
+}
