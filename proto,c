@@ -1,0 +1,133 @@
+ #include<stdio.h>
+int main(){
+
+    char temp=1;
+    char opcode;
+
+    msg_fmt mf;
+
+    string_parser p;
+
+    parser_initialization(&p);
+
+    printf("GIVE ME THE OPCODE:\n");
+    printf("GET OR SET\n");
+
+    scanf("%d",opcode);
+
+    if(!GET && !SET}{
+        printf("WRONG OP CODE");  
+    }
+    else if(SET){
+         while(temp!=7){
+        scanf("%s",GIVEN_STRING);
+        temp=string_fill(&p,THE_STRING,GIVEN_STRING);
+    }
+    
+    while(temp!=4){
+        scanf("%s",GIVEN_STRING);
+        temp=array_fill(&p,THE_STRING,GIVEN_STRING);
+
+        unsigned int checksum=cal_checksum(THE STRING);
+        acknowledgement=set_message_format(&p,&mf,opcode,strlen(THE STRING),THE STRING,checksum);
+
+        if(acknowledgement==1){
+            goto line10;
+        }
+        else{
+            //re-initiate the transfer process again.
+            goto line 20;
+        }
+
+    }
+    }
+    unsigned int cal_checksum(char *string){
+        unsignrd int checksum=0;
+
+            while(*string !='\0'){
+                checksum+=*string;
+            }
+            return(checksum);
+    }
+     //temp
+    int set_message_format(string_parser *parser,msg_fmt *mf,const char opcode,const char length,char* string,const int checksum){
+
+        char *ptr;
+
+        mf->s_frame=SOF;
+        mf->opc=opcode;
+        mf->typ=CHAR;
+        mf->length=length;
+        mf->value=string;
+        mf->check_sum=checksum;
+        parser_initialization(&p);
+        str_ptr=fill_values_in_strin(string,&p,&mf);
+     
+        //call the I2c function from here because, all the values are set in message frame
+        //sent the structure variable to the I2c register in the real hardware.
+        //now send it to function called  server.
+
+        //function calling
+        acknowlegment=server(ptr,&mf);
+        return(acknowlegment);
+    }
+
+       char *fill_values_in_string(char *string,string_parser *parser,msg_fmt *mf){
+
+        static transfer_string[150];
+    transfer_string[parser->pos++]=msg_fmt_ptr->s_frame;
+    transfer_string[parser->pos++]=msg_fmt_ptr->opc;
+    transfer_string[parser->pos++]=msg_fmt_ptr->typ;
+
+    //To transfer original string character yet to transfer string
+
+        while(*string!='\0'){
+            transfer_string[parser->pos++]=*string;
+            string++;
+        }
+        transfer_string[parser->pos]='\0';
+        return(&transfer_string);
+}
+
+
+    int server(char *str_ptr,msg_fmt *mf){
+        if(str_ptr[0]=='$'){
+            unsigned int current_checksum=cal_checksum(str_ptr);
+                    if(mf->check_sum==current_checksum){
+                            if(str_ptr[1]==SET){
+                                int i=3;
+                            for(i=3;i<mf->length,i++){
+                                printf("THE GIVEN STRING IS:%d\n",str_ptr[i]);
+                            }
+                            }
+                        
+                    }
+                    else{
+                        printf("CHECK_SUM IS WRONG"\n);
+                        return(0);
+                    }
+            }
+            else{
+                printf("SOF IS WRONG\n");
+                return(0);
+            }
+    }
+
+    else if(GET){
+         while(temp!=7){
+        scanf("%s",GIVEN_STRING);
+        temp=string_fill(&p,THE_STRING,GIVEN_STRING);
+    }
+    
+    while(temp!=4){
+        scanf("%s",GIVEN_STRING);
+        temp=array_fill(&p,THE_STRING,GIVEN_STRING);
+
+        !-first check the IP Address and the port number.
+        !-if it is right establish the connection.
+    }
+
+
+
+   
+}
