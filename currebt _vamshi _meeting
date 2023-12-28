@@ -1,0 +1,344 @@
+
+#define SOF '$'
+
+#define PACKET_LENGTH 100
+
+#define PACKET_LENGTH_TEMP 100
+
+typedef enum opcode{
+    GET=0;
+    SET=1;
+    INVALID=-1
+}opcode;
+
+
+
+typedef enum type{
+    CHAR=0;
+    INT=1;
+    STR=2;
+    INVALID=-1
+}type;
+
+
+typedef struct message_format{
+    char s_frame;
+    opcode opc;
+    type typ;
+    int length;
+    char *value;
+    int check_sum;
+}msg_fmt;
+
+
+#define SIZE_OF_THE_STRING 100
+
+char THE_STRING[SIZE_OF_THE_STRING];
+
+char GIVEN_STRING[SIZE_OF_THE_STRING];
+
+
+#ifdef STORAGE_CLASS
+#define STORAGE_CLASS static
+#else
+#define STORAGE_CLASS extern
+#endif
+
+typedef struct string_parser{
+    int pos;
+    int tokens;
+    int tokens_array;
+}string_parser;
+
+typedef struct types{
+    STRING=1;
+    PRIMITIVE=2;
+}typ;
+
+
+/*------------------------------------------------------------------------------------------------------------------------
+//Done functions
+------------------------------------------------------------------------------------------------------------------------*/
+void parser_initialization(string_parser *parser){
+    parser->pos=0;
+    parser->tokens=1;
+    parser->tokens_array=1;
+}
+
+
+//-----------------------------------------------------------------------------------------------------------------------------
+void find_the_type(const char*GIVEN_STRING){
+
+        c=GIVEN_STRING[0];
+        switch(c){
+            case 'T':
+            type=PRIMITIVE;
+                break;
+            case 'F':
+            type=PRIMITIVE;
+                break;
+            case 't':
+            type=PRIMITIVE;
+                break;
+            case 'f':
+            type=PRIMITIVE;
+                break;
+            case '0':
+            type=PRIMITIVE;
+                break;
+            case '1':
+            type=PRIMITIVE;
+                break;
+            case '2':
+            type=PRIMITIVE;
+                break;
+            case '3':
+            type=PRIMITIVE;
+                break;
+            case '4':
+            type=PRIMITIVE;
+                break;
+            case '5':
+            type=PRIMITIVE;
+                break;
+            case '6':
+            type=PRIMITIVE;
+                break;
+            case '7':
+            type=PRIMITIVE;
+                break;
+            case '8':
+            type=PRIMITIVE;
+                break;
+            case '9':
+            type=PRIMITIVE;
+                break;
+            default:type=STRING;
+            break;
+        }
+        return type;
+}
+//--------------------------------------------------------------------------------------------------------------------
+
+STORAGE_CLASS char string_fill(string_parser *parser,char *js,const char *GIVEN_STRING){
+    js[parser->pos++]='{';
+
+        unsigned char type=find_the_type(GIVEN_STRING);
+
+            if(type==STRING && (parser->tokens)%2!=0){
+                js[parser->pos++]='\"';
+                    
+                    for(;GIVEN_STRING!='\0',parser->pos++){
+                        js[parser->pos++]=*GIVEN_STRING;
+                        GIVEN_STRING++;
+                    }
+                    js[parser->pos++]='\"';
+                    parser->tokens++;
+                    add_characters(parser,js); //TO ADD : AND LEAVE ONE SPACE.
+                    return(parser->tokens);
+            }
+            else{
+                    for(;GIVEN_STRING!='\0',parser->pos++){
+                        js[parser->pos++]=*GIVEN_STRING;
+                        GIVEN_STRING++;
+                    }
+                        parser->tokens++;
+                        add_characters(parser,js);
+                        return(parser->tokens);
+                    }
+            
+    }
+    //----------------------------------------------------------------------------------------------------------------------------
+
+    void add_characters(string_parser *parser,char *js){
+        if(((parser->tokens)%2!=0)){
+        js[parser->pos++]=':';
+        js[parser->pos++]=' ';
+        }
+        else{
+            js[parser->pos++]=',';
+
+            if(parser->tokens==6){              //THIS IS TO ADD NEW LINE CHARACTER.
+                js[parser->pos++]='\n';
+                js[parser->pos++]=' ';
+                js[parser->pos++]=' ';
+                js[parser->pos++]='"';
+                js[parser->pos++]='"';
+            }
+        }
+    }
+
+//-------------------------------------------------------------------------------------------------------------------------------
+
+STORAGE_CLASS array_fill(&p,char *js,const char*GIVEN_STRING){
+    js[parser->pos++]='[';
+    js[parser->pos++]='\"';
+
+        for(;GIVEN_STRING!='\0',parser->pos++){
+            js[parser->pos++]=*GIVEN_STRING;
+            GIVEN_STRING++;
+            return(parser->tokens_array);
+        }
+        parser->pos++;       //Inc the parser to fill the next values
+        js[parser->pos++]=',';
+        js[parser->pos++]=' ';
+        parser->tokens_array++;
+
+            if(tokens_array==4){
+                js[parser->pos++]=']';
+                js[parser->pos++]='}';
+                js[parser->pos]='\0';
+            }
+        }
+    //-----------------------------------------------------------------------------------------------------------------------
+    //----------------------------for set op code functions-------------------------------------------------------------------
+
+    unsigned int cal_checksum(char *string){
+        unsigned int checksum=0;
+
+            while(*string !='\0'){
+                checksum+=*string;
+            }
+            return(checksum);
+    }
+     
+    int set_message_format(string_parser *parser,msg_fmt *mf,const char opcode,const char length,char* string,const int checksum){
+
+        char *ptr;
+
+        mf->s_frame=SOF;
+        mf->opc=opcode;
+        mf->typ=CHAR;
+        mf->length=length;
+        mf->value=string;
+        mf->check_sum=checksum;
+        parser_initialization(&p);
+        str_ptr=fill_values_in_strin(string,&p,&mf);
+     
+        
+
+        //function calling
+        acknowlegment=server(ptr,&mf);
+        return(acknowlegment);
+    }
+
+       char *fill_values_in_string(char *string,string_parser *parser,msg_fmt *mf){
+
+        static transfer_string[150];
+    transfer_string[parser->pos++]=msg_fmt_ptr->s_frame;
+    transfer_string[parser->pos++]=msg_fmt_ptr->opc;
+    transfer_string[parser->pos++]=msg_fmt_ptr->typ;
+
+    //To transfer original string character yet to transfer string
+
+        while(*string!='\0'){
+            transfer_string[parser->pos++]=*string;
+            string++;
+        }
+        transfer_string[parser->pos]='\0';
+        return(&transfer_string);
+}
+
+
+    int server(char *str_ptr,msg_fmt *mf){
+        if(str_ptr[0]=='$'){
+            unsigned int current_checksum=cal_checksum(str_ptr);
+                    if(mf->check_sum==current_checksum){
+                            if(str_ptr[1]==SET){
+                                int i;
+                            for(i=3;i<mf->length,i++){
+                                printf("THE GIVEN STRING IS:%d\n",str_ptr[i]);
+                            }
+                            }
+                            if(str_ptr[1]==GET){
+                                char tagname[mf->length];
+                                    int i,j=0;
+                                    for(i=3;i<mf->length;i++){
+                                        tagname[j]=str_ptr[i];
+                                        j++;
+                                    }
+                                /*The tagname stored in tagname string. now,we have to search it for that name in the whole server
+                                and transmit back to the client*/
+                            /*compare the tagname with existing data in the memory in the server side and sends the particular
+                            string back.*/
+                            
+
+                            }
+                        
+                    }
+                    else{
+                        printf("CHECK_SUM IS WRONG"\n);
+                        return(0);
+                    }
+            }
+            else{
+                printf("SOF IS WRONG\n");
+                return(0);
+            }
+    }
+    //---------------------------------------------------------------------------------------------------------------------------
+    //MAIN Function
+    #include<stdio.h>
+int main(){
+
+    char temp=1;
+    char opcode;
+
+    msg_fmt mf;
+
+    string_parser p;
+
+    parser_initialization(&p);
+
+    line10:printf("GIVE ME THE OPCODE:\n");
+    printf("GET OR SET\n");
+
+    scanf("%d",opcode);
+
+    if(!opcode==GET && !opcode==SET}{
+        printf("WRONG OP CODE");  
+    }
+    else if(opcode==SET){
+         while(temp!=7){
+        scanf("%s",GIVEN_STRING);
+        temp=string_fill(&p,THE_STRING,GIVEN_STRING);
+    }
+    
+    while(temp!=4){
+        scanf("%s",GIVEN_STRING);
+        temp=array_fill(&p,THE_STRING,GIVEN_STRING);
+
+        unsigned int checksum=cal_checksum(THE STRING);
+        line 20: char acknowledgement=set_message_format(&p,&mf,opcode,strlen(THE STRING),THE STRING,checksum);
+
+        if(acknowledgement==1){
+            goto line10;
+        }
+        else{
+            //re-initiate the transfer process again.
+            goto line 20;
+        }
+
+    }
+    }
+    
+
+    else if(opcode==GET){
+        //In set protocol we need only the tagname to search the data in the server.
+
+       scanf("%s",GIVEN_STRING);
+
+       strcpy(THE STRING,GIVEN_STRING);
+
+       unsigned int checksum=cal_checksum(THE STRING);
+        char acknowledgement=set_messge_format(&p,&mf,opcode,strlen(THE STRING),THE STRING,checksum);
+
+
+    }
+
+
+
+   
+}
+
+//----------------------------------------------------------------------------------------------------------------------
